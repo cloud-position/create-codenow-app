@@ -1,0 +1,42 @@
+{
+  "name": "create-codenow-app",
+  "version": "0.1.0",
+  "description": "CodeNow ブートキャンプ向けスターターを 1 コマンドで作成する CLI",
+  "type": "module",
+  "bin": {
+    "create-codenow-app": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "lib/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "test": "node --test tests/"
+  },
+  "dependencies": {
+    "picocolors": "^1.0.0"
+  },
+  "keywords": [
+    "codenow",
+    "nextjs",
+    "supabase",
+    "drizzle",
+    "starter",
+    "cli"
+  ],
+  "author": "Cloud Position, Inc.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cloud-position/create-codenow-app.git"
+  },
+  "homepage": "https://github.com/cloud-position/create-codenow-app#readme",
+  "bugs": {
+    "url": "https://github.com/cloud-position/create-codenow-app/issues"
+  }
+}

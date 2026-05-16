@@ -15,24 +15,24 @@ async function main() {
     process.exit(1)
   }
 
-  const name = await resolveProjectName(process.argv.slice(2))
-  const targetDir = path.resolve(process.cwd(), name)
-
-  if (existsSync(targetDir)) {
-    console.error(pc.red(`ディレクトリが既に存在します: ${name}`))
-    process.exit(1)
-  }
-
-  console.log(pc.cyan(`CodeNow スターターを ${pc.bold(name)} に作成中...`))
-  console.log()
-
+  let targetDir
   try {
+    const name = await resolveProjectName(process.argv.slice(2))
+    targetDir = path.resolve(process.cwd(), name)
+
+    if (existsSync(targetDir)) {
+      throw new Error(`ディレクトリが既に存在します: ${name}`)
+    }
+
+    console.log(pc.cyan(`CodeNow スターターを ${pc.bold(name)} に作成中...`))
+    console.log()
+
     await fetchTemplate("nextjs", targetDir)
     await postInit(targetDir, name)
   } catch (err) {
     console.error()
     console.error(pc.red("エラー: ") + err.message)
-    if (existsSync(targetDir)) {
+    if (targetDir && existsSync(targetDir)) {
       console.error(pc.yellow("作成途中のディレクトリを削除します..."))
       await rm(targetDir, { recursive: true, force: true })
     }

@@ -4,7 +4,7 @@
   "description": "CodeNow ブートキャンプ向けスターターを 1 コマンドで作成する CLI",
   "type": "module",
   "bin": {
-    "create-codenow-app": "./dist/index.js"
+    "create-codenow-app": "dist/index.js"
   },
   "files": [
     "dist",

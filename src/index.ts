@@ -7,10 +7,24 @@ import { fetchTemplate } from "./lib/fetch.js"
 import { postInit } from "./lib/postinit.js"
 import { resolveProjectName } from "./lib/prompt.js"
 
+const REQUIRED_NODE: readonly [number, number, number] = [24, 15, 0]
+
+function meetsRequiredNode(): boolean {
+  const [major, minor, patch] = process.versions.node
+    .split(".")
+    .map((n) => Number(n)) as [number, number, number]
+  if (major !== REQUIRED_NODE[0]) return major > REQUIRED_NODE[0]
+  if (minor !== REQUIRED_NODE[1]) return minor > REQUIRED_NODE[1]
+  return patch >= REQUIRED_NODE[2]
+}
+
 async function main(): Promise<void> {
-  const major = Number(process.versions.node.split(".")[0])
-  if (major < 24) {
-    console.error(pc.red(`Node.js 24 以上が必要です(現在: ${process.versions.node})`))
+  if (!meetsRequiredNode()) {
+    console.error(
+      pc.red(
+        `Node.js v${REQUIRED_NODE.join(".")} 以上が必要です(現在: ${process.versions.node})`,
+      ),
+    )
     process.exit(1)
   }
 

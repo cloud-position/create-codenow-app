@@ -1,6 +1,6 @@
 {
   "name": "create-codenow-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CodeNow ブートキャンプ向けスターターを 1 コマンドで作成する CLI",
   "type": "module",
   "bin": {

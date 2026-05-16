@@ -2,8 +2,8 @@ import { createInterface } from "node:readline/promises"
 
 const NAME_PATTERN = /^[a-z0-9][a-z0-9-]*$/i
 
-export async function resolveProjectName(argv) {
-  let name = argv[0]
+export async function resolveProjectName(argv: string[]): Promise<string> {
+  let name: string | undefined = argv[0]
   if (!name) {
     const rl = createInterface({ input: process.stdin, output: process.stdout })
     name = (await rl.question("プロジェクト名: ")).trim()

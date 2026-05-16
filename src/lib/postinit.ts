@@ -3,13 +3,16 @@ import { access, copyFile } from "node:fs/promises"
 import path from "node:path"
 import pc from "picocolors"
 
-export async function postInit(targetDir, projectName) {
+export async function postInit(
+  targetDir: string,
+  projectName: string,
+): Promise<void> {
   await copyEnvLocal(targetDir)
   await initGit(targetDir)
   printDoneMessage(targetDir, projectName)
 }
 
-async function copyEnvLocal(targetDir) {
+async function copyEnvLocal(targetDir: string): Promise<void> {
   const src = path.join(targetDir, ".env.local.example")
   const dst = path.join(targetDir, ".env.local")
   try {
@@ -21,7 +24,7 @@ async function copyEnvLocal(targetDir) {
   }
 }
 
-async function hasGit() {
+async function hasGit(): Promise<boolean> {
   return new Promise((resolve) => {
     const child = spawn("git", ["--version"], { stdio: "ignore" })
     child.on("close", (code) => resolve(code === 0))
@@ -29,7 +32,7 @@ async function hasGit() {
   })
 }
 
-async function initGit(targetDir) {
+async function initGit(targetDir: string): Promise<void> {
   if (!(await hasGit())) {
     console.log(pc.yellow("⚠") + " git が見つからないため初期コミットをスキップ")
     return
@@ -49,7 +52,7 @@ async function initGit(targetDir) {
   console.log(pc.green("✓") + " git リポジトリを初期化")
 }
 
-function hasCommit(targetDir) {
+function hasCommit(targetDir: string): Promise<boolean> {
   return new Promise((resolve) => {
     const child = spawn("git", ["rev-parse", "HEAD"], {
       cwd: targetDir,
@@ -60,7 +63,7 @@ function hasCommit(targetDir) {
   })
 }
 
-function runIn(cwd, cmd, args) {
+function runIn(cwd: string, cmd: string, args: string[]): Promise<void> {
   return new Promise((resolve, reject) => {
     const child = spawn(cmd, args, { cwd, stdio: "ignore" })
     child.on("close", (code) =>
@@ -72,7 +75,7 @@ function runIn(cwd, cmd, args) {
   })
 }
 
-function printDoneMessage(targetDir, projectName) {
+function printDoneMessage(targetDir: string, projectName: string): void {
   const cd = path.relative(process.cwd(), targetDir) || projectName
   console.log()
   console.log(pc.bold(pc.cyan("✨ プロジェクトの作成が完了しました")))

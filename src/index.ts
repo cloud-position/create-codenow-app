@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import { existsSync } from "node:fs"
 import { rm } from "node:fs/promises"
 import path from "node:path"
@@ -8,14 +7,14 @@ import { fetchTemplate } from "./lib/fetch.js"
 import { postInit } from "./lib/postinit.js"
 import { resolveProjectName } from "./lib/prompt.js"
 
-async function main() {
+async function main(): Promise<void> {
   const major = Number(process.versions.node.split(".")[0])
-  if (major < 22) {
-    console.error(pc.red(`Node.js 22 以上が必要です(現在: ${process.versions.node})`))
+  if (major < 24) {
+    console.error(pc.red(`Node.js 24 以上が必要です(現在: ${process.versions.node})`))
     process.exit(1)
   }
 
-  let targetDir
+  let targetDir: string | undefined
   try {
     const name = await resolveProjectName(process.argv.slice(2))
     targetDir = path.resolve(process.cwd(), name)
@@ -30,8 +29,9 @@ async function main() {
     await fetchTemplate("nextjs", targetDir)
     await postInit(targetDir, name)
   } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
     console.error()
-    console.error(pc.red("エラー: ") + err.message)
+    console.error(pc.red("エラー: ") + message)
     if (targetDir && existsSync(targetDir)) {
       console.error(pc.yellow("作成途中のディレクトリを削除します..."))
       await rm(targetDir, { recursive: true, force: true })

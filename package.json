@@ -4,19 +4,21 @@
   "description": "CodeNow ブートキャンプ向けスターターを 1 コマンドで作成する CLI",
   "type": "module",
   "bin": {
-    "create-codenow-app": "./index.js"
+    "create-codenow-app": "./dist/index.js"
   },
   "files": [
-    "index.js",
-    "lib/",
+    "dist",
     "README.md",
     "LICENSE"
   ],
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=24.0.0"
   },
   "scripts": {
-    "test": "node --test tests/"
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "dev": "tsup --watch",
+    "prepublishOnly": "tsup"
   },
   "dependencies": {
     "picocolors": "^1.0.0"
@@ -38,5 +40,10 @@
   "homepage": "https://github.com/cloud-position/create-codenow-app#readme",
   "bugs": {
     "url": "https://github.com/cloud-position/create-codenow-app/issues"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.4",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3"
   }
 }

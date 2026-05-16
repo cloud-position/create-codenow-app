@@ -1,17 +1,23 @@
 import { spawn } from "node:child_process"
 
 import { TEMPLATES } from "./templates.js"
+import type { TemplateConfig, TemplateName } from "./templates.js"
 
-export async function fetchTemplate(name, targetDir) {
+export async function fetchTemplate(
+  name: TemplateName,
+  targetDir: string,
+): Promise<void> {
   const tpl = TEMPLATES[name]
-  if (!tpl) throw new Error(`未知のテンプレート: ${name}`)
   if (tpl.fetcher === "create-next-app") {
     return fetchViaCreateNextApp(tpl, targetDir)
   }
   throw new Error(`未対応の fetcher: ${tpl.fetcher}`)
 }
 
-function fetchViaCreateNextApp(tpl, targetDir) {
+function fetchViaCreateNextApp(
+  tpl: TemplateConfig,
+  targetDir: string,
+): Promise<void> {
   return new Promise((resolve, reject) => {
     const child = spawn(
       "npx",
